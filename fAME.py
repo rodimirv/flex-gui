@@ -19,6 +19,12 @@ class bcolors:
 	OKGREEN = '\033[92m'
 	OKBLUE = '\033[94m'
 	OKCYAN = '\033[96m'
+class winTitle:
+	MAIN = 'AME IIoT'
+	WINDOW1 = 'INSTALLERS'
+class picFile:
+	ico = 'flex_logo.png'
+	bnr = 'AME IIoT.png'
 	
 # Try to import Tkinter, if Tkinter does not exist in the system the installation of Tkinter will run
 while True:
@@ -33,10 +39,10 @@ while True:
 	try:
 		root = Tk()
 		root.configure(background='white')
-		root.title('AME IIoT')
+		root.title(winTitle.MAIN)
 		root.resizable(False, False)
-		ico = PhotoImage(file = 'flex_logo.png')
-		bnr = PhotoImage(file = 'AME IIoT.png')
+		ico = PhotoImage(file = picFile.ico)
+		bnr = PhotoImage(file = picFile.bnr)
 		root.iconphoto(True, ico)
 		banner = Label(root, image=bnr, bg='white')
 
@@ -62,7 +68,7 @@ while True:
 
 		def btnInstallers_click():
 			installers = Tk()
-			installers.title('INSTALLERS')
+			installers.title(winTitle.WINDOW1)
 			installers.resizable(False, False)
 			installers.configure(background='white')
 
@@ -280,7 +286,7 @@ while True:
 		trInput3.grid(row=17, column=4)
 		trInput4.grid(row=17, column=6)
 		btnTrain.grid(row=19, column=0, columnspan=8)
-		btnExport.grid(row=20, column=0, columnspan=8)
+		btnExport.grid(row=25, column=0, columnspan=8)
 
 
 		root.mainloop()
