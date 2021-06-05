@@ -1,13 +1,14 @@
 
 # Author: Rodimir Vilale
 
-# Current Revision: 2.1
+# Current Revision: 3.0
 
 # Revision 1	- May 2, 2021	- First draft
 # Revision 2	- May 4, 2021	- Added Swapfile
 # Revision 2.1	- May 7, 2021	- Added Tkinter install when Tkinter does not exist in the device
 #				- Added print colors
 # Revision 2.2	- May 12, 2021	- Added folder template creation for jetson-inference/python/training/detection/ssd
+# Revision 3.0	- June 4, 2021	- Added class names write GUI to labels.txt
 
 import time
 from subprocess import call
@@ -30,6 +31,7 @@ class picFile:
 while True:
 	try:
 		from tkinter import *
+		from tkinter.scrolledtext import ScrolledText
 	except ImportError:
 		print(bcolors.WARNING + 'Tkinter is required to run this file, please enter password when prompted to install TKinter')
 		time.sleep(2)
@@ -86,12 +88,13 @@ while True:
 
 			insLabel1 = Label(installers, text='Required to be connected to the internet when running installers' +'\nAlways check for updates before running installers'+'\nInstall in numerical order'+'\nEnter password when prompted', pady=10, bg='white', highlightbackground = hlColor)
 
+			#Installer Button - Check for updates
 			btnInsChkUpd = Button(installers, text="0. Check For Updates", bg='white', highlightbackground = hlColor, command=btnInsChkUpd_click)
-
+			#Installer Button - Install CMake
 			btnInsCMake = Button(installers, text="1. Install CMake", bg='white', highlightbackground = hlColor, command=btnInsCMake_click)
-
+			#Installer Button - Install VL4-Utils, for handling media devices 
 			btnInsVl4 = Button(installers, text="2. Install VL4-Utils", bg='white', highlightbackground = hlColor, command=btnInsVl4_click)
-
+			#Installer Button - Clone Jetson-Inference Github Repo
 			btnClnGit = Button(installers, text="3. Clone Jetson-Inference Github Repo", bg='white', highlightbackground = hlColor, command=btnClnGit_click)
 
 			btnMkdir = Button(installers, text="4. Create Folder Inside Jetson-Inference called build", bg='white', highlightbackground = hlColor, command=btnMkdir_click)
@@ -167,6 +170,25 @@ while True:
 			else:
 				crLabelErr = Label(root, text=folderEmpty, fg="red", bg='white')
 				crLabelErr.grid(row=crRow+1, column=0, columnspan=8)
+		def openTxt():
+			crFolderName = crInput1.get()
+			if (crFolderName != ''):
+				labels_text = open('/home/'+currentUser+'/jetson-inference/python/training/detection/ssd/data/'+crFolderName+'/labels.txt', 'r')
+				readContent = labels_text.read()
+				classNameInput.insert(END, readContent)
+				labels_text.close()
+			
+		
+		def btnClassNameInputSave_click():
+			crFolderName = crInput1.get()
+			cnRow = btnClassNameInputSave.grid_info()['row']
+			if (crFolderName != ''):
+				labels_text = open('/home/'+currentUser+'/jetson-inference/python/training/detection/ssd/data/'+crFolderName+'/labels.txt', 'w')
+				readContent = labels_text.write(classNameInput.get(1.0, END))
+			else:
+				writeErr = Label(root, text='Enter the folder name where the desired labels.txt is located in the "Name of the Folder to be Created:" entry', fg="red", bg='white')
+				writeErr.grid(row=cnRow+1, column=0, columnspan=8)
+			
 		
 		def btnCap_click():
 			cameraDir = camDirInput.get()
@@ -226,6 +248,13 @@ while True:
 		crInput1 = Entry(root, width=10, bg='white', highlightbackground = hlColor)
 
 		btnCusMdlFolder = Button(root, text="Copy Template to the Jetson Training Folder", command=btnCusMdlFolder_click, padx=10, bg='white', highlightbackground = hlColor)
+		
+		classNameInputLabel = Label(root, text='\nEnter the class names that will be used below and hit save:',bg='white')
+		
+		classNameInput = ScrolledText(root, width=50, height=5)
+		
+		btnClassNameInputSave = Button(root, text="Save class names to labels.txt", command=btnClassNameInputSave_click, padx=10, bg='white', highlightbackground = hlColor)
+		
 
 		cameraCaptureLabel = Label(root, text='\nEnter device directory | e.g. /dev/video0' + '\nUse the "Show List of Cameras Detected" button if unknown', bg='white')
 
@@ -269,17 +298,34 @@ while True:
 		crInputLabel1.grid(row=6, column=0, columnspan=3)
 		crInput1.grid(row=6, column=0, columnspan=6)
 		btnCusMdlFolder.grid(row=6, column=3, columnspan=8)
-		cameraCaptureLabel.grid(row=8, column=0, columnspan=8)
-		camDirInputLabel.grid(row=9, column=0, columnspan=3)
-		camDirInput.grid(row=9, column=0, columnspan=5)
-		btnCap.grid(row=9, column=0, columnspan=8)
-		btnShowCamLst.grid(row=9, column=5, columnspan=8)
-		b4trLabel.grid(row=10, column=0, columnspan=8)
-		trInputLabel1.grid(row=11, column=0, columnspan=6)
-		trInput1.grid(row=11, column=2, columnspan=6)
-		btnCopyTrValues.grid(row=12, column=0, columnspan=8)
-		trLabel1.grid(row=14, column=0, columnspan=8)
-		trInputLabel2.grid(row=17, column=1)
+		classNameInputLabel.grid(row=10, column=0, columnspan=8)
+		classNameInput.grid(row=11, column=0, columnspan=8)
+		btnClassNameInputSave.grid(row=12, column=0, columnspan=8)
+		cameraCaptureLabel.grid(row=15, column=0, columnspan=8)
+		camDirInputLabel.grid(row=16, column=0, columnspan=3)
+		camDirInput.grid(row=16, column=0, columnspan=5)
+		btnCap.grid(row=16, column=0, columnspan=8)
+		btnShowCamLst.grid(row=16, column=5, columnspan=8)
+		b4trLabel.grid(row=17, column=0, columnspan=8)
+		trInputLabel1.grid(row=18, column=0, columnspan=6)
+		trInput1.grid(row=18, column=2, columnspan=6)
+		btnCopyTrValues.grid(row=19, column=0, columnspan=8)
+		trLabel1.grid(row=21, column=0, columnspan=8)
+		trInputLabel2.grid(row=23, column=1)
+		trInputLabel3.grid(row=23, column=3)
+		trInputLabel4.grid(row=23, column=5)
+		trInput2.grid(row=23, column=2)
+		trInput3.grid(row=23, column=4)
+		trInput4.grid(row=23, column=6)
+		btnTrain.grid(row=26, column=0, columnspan=8)
+		btnExport.grid(row=30, column=0, columnspan=8)
+
+
+		root.mainloop()
+	except Exception as err:
+		print(err)
+		#continue
+	break
 		trInputLabel3.grid(row=17, column=3)
 		trInputLabel4.grid(row=17, column=5)
 		trInput2.grid(row=17, column=2)
