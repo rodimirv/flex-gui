@@ -326,17 +326,3 @@ while True:
 		print(err)
 		#continue
 	break
-		trInputLabel3.grid(row=17, column=3)
-		trInputLabel4.grid(row=17, column=5)
-		trInput2.grid(row=17, column=2)
-		trInput3.grid(row=17, column=4)
-		trInput4.grid(row=17, column=6)
-		btnTrain.grid(row=19, column=0, columnspan=8)
-		btnExport.grid(row=25, column=0, columnspan=8)
-
-
-		root.mainloop()
-	except Exception as err:
-		print(err)
-		#continue
-	break
