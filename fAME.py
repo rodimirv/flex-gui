@@ -33,7 +33,7 @@ while True:
 		from tkinter import *
 		from tkinter.scrolledtext import ScrolledText
 	except ImportError:
-		print(bcolors.WARNING + 'Tkinter is required to run this file, please enter password when prompted to install TKinter')
+		print(bcolors.WARNING + 'Tkinter is required to run this file, please enter password when prompted to install TKinter - Restart after install')
 		time.sleep(2)
 		call('sudo apt-get install python3-tk',shell=True)
 
