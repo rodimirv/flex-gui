@@ -192,7 +192,7 @@ while True:
 		
 		def btnCap_click():
 			cameraDir = camDirInput.get()
-			call(['gnome-terminal', '--', 'camera-capture', '/dev/' +cameraDir])
+			call(['gnome-terminal', '--working-directory=/home/' +currentUser+ '/jetson-inference/build/aarch64/bin', '--command=./camera-capture /dev/' +cameraDir])
 
 		def btnShowCamLst_click():
 			call('v4l2-ctl --list-devices',shell=True)
