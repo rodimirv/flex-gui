@@ -157,7 +157,7 @@ while True:
 			call(['gnome-terminal', '--working-directory=/home/' +currentUser+ '/jetson-inference/build', '--', 'sudo', 'ldconfig'])
 
 		def btnInsSwapFileDef_click():
-			call(['gnome-terminal', '--working-directory=/home/' +currentUser+ '/gui-inference/installSwapfile', '--', 'bash', 'installSwapfile.sh'])
+			call(['gnome-terminal', '--working-directory=/home/' +currentUser+ '/flex-gui/installSwapfile', '--', 'bash', 'installSwapfile.sh'])
 
 		# Root Controls
 		def btnCusMdlFolder_click():
